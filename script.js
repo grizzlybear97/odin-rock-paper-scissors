@@ -10,7 +10,12 @@ function getComputerChoice(){
 function getHumanChoice(){
     let choice = prompt("Enter your choice:")
     choice = choice.toLowerCase();
-    return choice;
+    if(choiceArray.includes(choice)){
+        return choice;
+    }else {
+        alert('wrong input, try again')
+        getHumanChoice();
+    }
 }
 
 function playGame(){
@@ -69,9 +74,16 @@ function playGame(){
         playRound(humanSelection, computerSelection);
     }
 
-    
+    finalResult();
 }
 
+function finalResult(){
+    if(humanScore > computerScore){
+        console.log(`the human won with ${humanScore}`)
+    }else if(computerScore > humanScore){
+        console.log(`the computer won with ${computerScore}`)
+    }
+}
 
 playGame();
 
