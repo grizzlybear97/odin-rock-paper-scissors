@@ -19,7 +19,7 @@ function getHumanChoice(){
 }
 
 function playGame(){
-
+    let round = 1;
   function playRound(humanChoice, computerChoice){
         
         let roundStatus;
@@ -59,14 +59,14 @@ function playGame(){
         }
 
         if(roundStatus === 0){
-            console.log(`you won! ${humanChoice} beats ${computerChoice}`);
+            alert(`Round:${round} you won! ${humanChoice} beats ${computerChoice}`);
         }else if(roundStatus === 1) {
-            console.log(`you lost! ${computerChoice} beats ${humanChoice}`);
+            alert(`Round:${round} you lost! ${computerChoice} beats ${humanChoice}`);
         } else {
-            console.log(`computer picked ${computerChoice} and you picked ${humanChoice}`)
+            alert(`Round:${round} computer picked ${computerChoice} and you picked ${humanChoice}`)
         }
-
-        
+        console
+        round++;        
     }
     for(let i = 0; i < 5; i++) {
         const humanSelection = getHumanChoice();
@@ -79,9 +79,9 @@ function playGame(){
 
 function finalResult(){
     if(humanScore > computerScore){
-        console.log(`the human won with ${humanScore}`)
+        alert(`you won with ${humanScore} against the computer with ${computerScore} score`)
     }else if(computerScore > humanScore){
-        console.log(`the computer won with ${computerScore}`)
+        alert(`the computer won with ${computerScore} against your score of ${humanScore} score`)
     }
 }
 
