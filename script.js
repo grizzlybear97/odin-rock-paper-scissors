@@ -1,6 +1,41 @@
 let humanScore = 0;
 let computerScore = 0;
+let roundCount = 0;
 let choiceArray = ['rock', 'paper', 'scissors'];
+
+const buttons = document.querySelectorAll('button')
+let i = 0;
+buttons.forEach((button) => {
+    button.textContent = choiceArray[i]
+    i++
+})
+
+buttons[0].addEventListener("click", () => {
+    playRound('rock', getComputerChoice())
+})
+buttons[1].addEventListener("click", () => {
+    playRound('paper', getComputerChoice())
+})
+buttons[2].addEventListener("click", () => {
+    playRound('scissors', getComputerChoice())
+})
+
+//div to show results
+const results = document.createElement('div');
+const score = document.createElement('p');
+const roundResult = document.createElement('p');
+const round = document.createElement('p');
+const roundStatus = document.createElement('p');
+
+score.innerText = "player>  0 | 0  <computer";
+round.innerText = "Round: 0";
+results.appendChild(score)
+results.appendChild(round)
+results.appendChild(roundStatus)
+results.appendChild(roundResult)
+
+document.body.appendChild(results)
+
 
 function getComputerChoice(){
     let choice = Math.floor(Math.random()*3)
@@ -18,73 +53,63 @@ function getHumanChoice(){
     }
 }
 
-function playGame(){
-    let round = 1;
-  function playRound(humanChoice, computerChoice){
-        
-        let roundStatus;
-
-        if(humanChoice === 'rock') {
-            if(computerChoice === 'paper') {
-                humanScore++;
-                roundStatus = 0;
-            } else if(computerChoice === 'scissors'){
-                computerScore++;
-                roundStatus = 1;
-            }else {
-                roundStatus = 2;
-            }
-        }
-        if(humanChoice === 'paper') {
+function playRound(humanChoice, computerChoice){
+    let roundStatus;
+    if(humanChoice === 'rock') {
+        if(computerChoice === 'paper') {
+            computerChoice++;
+            roundStatus = 0;
+        } else if(computerChoice === 'scissors'){
+            humanScore++;
+            roundStatus = 1;
+        } else roundStatus = 2;
+    }
+    else if(humanChoice === 'paper') {
             if(computerChoice === 'rock') {
                 humanScore++;
-                roundStatus = 0;
+                roundStatus = 1;
             } else if(computerChoice === 'scissors'){
                 computerScore++;
-                roundStatus = 1;
-            }else {
-                roundStatus = 2;
-            }
-        }
-        if(humanChoice === 'scissors') {
-            if(computerChoice === 'paper') {
-                humanScore++;
                 roundStatus = 0;
-            } else if(computerChoice === 'rock'){
-                computerScore++;
-                roundStatus = 1;
-            }else {
-                roundStatus = 2;
-            }
-        }
-
-        if(roundStatus === 0){
-            alert(`Round:${round} you won! ${humanChoice} beats ${computerChoice}`);
-        }else if(roundStatus === 1) {
-            alert(`Round:${round} you lost! ${computerChoice} beats ${humanChoice}`);
-        } else {
-            alert(`Round:${round} computer picked ${computerChoice} and you picked ${humanChoice}`)
-        }
-        console
-        round++;        
+            } else roundStatus = 2;
     }
-    for(let i = 0; i < 5; i++) {
-        const humanSelection = getHumanChoice();
-        const computerSelection = getComputerChoice();
-        playRound(humanSelection, computerSelection);
-    }
+    else if(humanChoice === 'scissors') {
+        if(computerChoice === 'paper') {
+            humanScore++;
+            roundStatus = 1;
+        } else if(computerChoice === 'rock'){
+            computerScore++;
+            roundStatus = 0;
+        } else roundStatus = 2;
+    } 
 
-    finalResult();
+    if(roundStatus == 0) roundStatus = 'lost';
+    else if(roundStatus == 1) roundStatus = 'won';
+    else roundStatus = 'draw'
+
+    roundCount++;
+    showResult(`you choose ${humanChoice}, computer choose ${computerChoice}`,humanScore,computerScore,roundCount, roundStatus)      
+    if(roundCount === 5){
+        buttons.forEach((button) => {
+            button.disabled = true;
+        })
+        finalResult(humanScore,computerScore,roundCount,roundStatus);
+    }
 }
 
-function finalResult(){
+function finalResult(a,b,c,d){
     if(humanScore > computerScore){
-        alert(`you won with ${humanScore} against the computer with ${computerScore} score`)
+        showResult(`you won with ${humanScore} against the computer with ${computerScore} score`,a,b,c,d)
     }else if(computerScore > humanScore){
-        alert(`the computer won with ${computerScore} against your score of ${humanScore} score`)
-    }
+        showResult(`the computer won with ${computerScore} against your score of ${humanScore} score`,a,b,c,d)
+    }else showResult(`its draw with ${computerScore} against your score of ${humanScore} score`,a,b,c,d)
 }
 
-playGame();
+function showResult(str,humanScore,computerScore,roundNumber,roundstatus){
+    score.innerText = `player> ${humanScore} | ${computerScore}  <computer`;
+    roundResult.textContent = str;
+    round.innerText = `Round: ${roundNumber}`;
+    roundStatus.innerText = `you have ${roundstatus}`;
+}
 
 
